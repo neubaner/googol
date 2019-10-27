@@ -1,12 +1,18 @@
-import { combineReducers, createStore } from 'redux'
-import starship from './starship'
+import { combineReducers, createStore, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
+import starship, { StarshipState } from './starship'
 
 // Este projeto usa a metodologia Ducks para estruturar uma aplicação redux
 // https://github.com/erikras/ducks-modular-redux
-const rootReducer = combineReducers({
+
+export interface ReduxState {
+  starship: StarshipState
+}
+
+const rootReducer = combineReducers<ReduxState>({
   starship,
 })
 
-const store = createStore(rootReducer)
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
 
 export default store

@@ -91,10 +91,11 @@ function rawObjectToStarship(raw: any): Starship {
 }
 
 export async function searchStarships(
-  searchTerm: string
+  searchTerm: string,
+  page: number = 1
 ): Promise<SWAPIResponse<Starship>> {
   const response = await fetch(
-    `${baseUrl}/starships?search=${encodeURIComponent(searchTerm)}`
+    `${baseUrl}/starships?search=${encodeURIComponent(searchTerm)}&page=${page}`
   )
   const body = await response.json()
 
