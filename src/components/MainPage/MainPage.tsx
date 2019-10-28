@@ -7,8 +7,13 @@ import {
   setSearchTerm,
 } from '../../redux/starship'
 import StarshipList from '../StarshipList/StarshipList'
-import { MainPageWrapper } from './styles'
+import { MainPageWrapper, Error } from './styles'
 import useDebounce from '../../hooks/useDebounce'
+import Button from '../Button/Button'
+import Input from '../Input/Input'
+import Title from '../Title/Title'
+import StarshipModal from '../StarshipModal/StarshipModal'
+import { showStarshipModal, closeStarshipModal } from '../../redux/ui'
 
 export interface MainPageProps {
   starships: ReduxState['starship']['items']
@@ -17,9 +22,13 @@ export interface MainPageProps {
   page: ReduxState['starship']['page']
   searchTerm: ReduxState['starship']['searchTerm']
   error: ReduxState['starship']['error']
+  isModalOpen: ReduxState['ui']['isModalOpen']
+  starshipIndex: ReduxState['ui']['starshipIndex']
   fetchStarships: (searchTerm: string) => void
   fetchStarshipsNextPage: (searchTerm: string, page: number) => void
   setSearchTerm: (searchTerm: string) => void
+  showStarshipModal: (index: number) => void
+  closeStarshipModal: () => void
 }
 
 const MainPage = ({
@@ -28,10 +37,14 @@ const MainPage = ({
   doHaveNextPage,
   page,
   error,
+  isModalOpen,
+  starshipIndex,
   searchTerm,
   fetchStarships,
   fetchStarshipsNextPage,
   setSearchTerm,
+  showStarshipModal,
+  closeStarshipModal,
 }: MainPageProps) => {
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
 
@@ -53,16 +66,33 @@ const MainPage = ({
 
   return (
     <MainPageWrapper>
-      <input value={searchTerm} onChange={handleSearchTermChange} />
-      <StarshipList starships={starships} />
-      {isFetching && <div>Loading...</div>}
-      {doHaveNextPage && <button onClick={handleLoadMore}>Load more</button>}
+      <Title>Googol</Title>
+      <Input
+        placeholder="Search..."
+        value={searchTerm}
+        onChange={handleSearchTermChange}
+      />
+      {error !== null && <Error>{error}</Error>}
+      <StarshipList onClick={showStarshipModal} starships={starships} />
+      {(doHaveNextPage || isFetching) && (
+        <Button onClick={handleLoadMore} disabled={isFetching}>
+          {isFetching ? 'Loading...' : 'Load more'}
+        </Button>
+      )}
+      {isModalOpen && (
+        <StarshipModal
+          isOpen={isModalOpen}
+          onModalClose={closeStarshipModal}
+          starship={starships[starshipIndex]}
+        />
+      )}
     </MainPageWrapper>
   )
 }
 
 const mapStateToProps = ({
   starship: { error, isFetching, items, page, doHaveNextPage, searchTerm },
+  ui: { isModalOpen, starshipIndex },
 }: ReduxState) => ({
   starships: items,
   isFetching,
@@ -70,12 +100,16 @@ const mapStateToProps = ({
   doHaveNextPage,
   searchTerm,
   error,
+  isModalOpen,
+  starshipIndex,
 })
 
 const mapDispatchToProps = {
   fetchStarships,
   fetchStarshipsNextPage,
   setSearchTerm,
+  showStarshipModal,
+  closeStarshipModal,
 }
 
 export default connect(

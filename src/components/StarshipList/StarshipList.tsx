@@ -5,13 +5,18 @@ import StarshipDetails from '../StarshipDetails/StarshipDetails'
 
 export interface StarshipListProps {
   starships: Starship[]
+  onClick?: (index: number) => void
 }
 
-const StarshipList = ({ starships }: StarshipListProps) => {
+const StarshipList = ({ starships, onClick }: StarshipListProps) => {
   return (
     <StarshipListWrapper>
-      {starships.map(x => (
-        <StarshipDetails key={x.url} starship={x} />
+      {starships.map((x, index) => (
+        <StarshipDetails
+          onClick={() => onClick && onClick(index)}
+          key={x.url}
+          starship={x}
+        />
       ))}
     </StarshipListWrapper>
   )
