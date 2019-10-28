@@ -85,6 +85,7 @@ export default function reducer(
         doHaveNextPage: action.response.next !== null,
         items: action.response.results,
         page: state.page + 1,
+        error: null,
       }
     case STARSHIPS_ERROR:
       return {
@@ -108,6 +109,7 @@ export default function reducer(
         isFetching: false,
         doHaveNextPage: action.response.next !== null,
         page: state.page + 1,
+        error: null,
         items: [...state.items, ...action.response.results],
       }
     default:
