@@ -29,6 +29,22 @@ const StarshipModal = ({
     max_atmosphering_speed,
     starship_class,
   } = starship
+
+  const fields = [
+    { label: 'Name', value: name },
+    { label: 'Model', value: model },
+    { label: 'Starship Class', value: starship_class },
+    { label: 'Max Atmosphering speed', value: max_atmosphering_speed },
+    { label: 'Length', value: length },
+    { label: 'Cost in credits', value: cost_in_credits },
+    { label: 'Cargo Capacity', value: cargo_capacity },
+    { label: 'Consumables', value: consumables },
+    { label: 'MGLT', value: MGLT },
+    { label: 'Hyperdrive Rating', value: hyperdrive_rating },
+    { label: 'Manufacture', value: manufacturer },
+    { label: 'Crew', value: crew },
+  ]
+
   return (
     <Modal
       style={{
@@ -47,18 +63,11 @@ const StarshipModal = ({
       isOpen={isOpen}
     >
       <CloseButton onClick={onModalClose}>X</CloseButton>
-      <Field name="Name">{name}</Field>
-      <Field name="Model">{model}</Field>
-      <Field name="Starship Class">{starship_class}</Field>
-      <Field name="Max Atmosphering speed">{max_atmosphering_speed}</Field>
-      <Field name="Length">{length} m</Field>
-      <Field name="Cost in credits">{cost_in_credits}</Field>
-      <Field name="Cargo Capacity">{cargo_capacity}</Field>
-      <Field name="Consumables">{consumables}</Field>
-      <Field name="MGLT">{MGLT}</Field>
-      <Field name="Hyperdrive Rating">{hyperdrive_rating}</Field>
-      <Field name="Manufacture">{manufacturer}</Field>
-      <Field name="Crew">{crew}</Field>
+      {fields.map(({ label, value }) => (
+        <Field key={label} name={label}>
+          {value}
+        </Field>
+      ))}
     </Modal>
   )
 }
