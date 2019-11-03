@@ -11,11 +11,11 @@ export interface StarshipListProps {
 const StarshipList = ({ starships, onClick }: StarshipListProps) => {
   return (
     <StarshipListWrapper>
-      {starships.map((x, index) => (
+      {starships.map((starship, index) => (
         <StarshipDetails
           onClick={() => onClick && onClick(index)}
-          key={x.url}
-          starship={x}
+          key={starship.url}
+          starship={starship}
         />
       ))}
     </StarshipListWrapper>
