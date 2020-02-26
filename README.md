@@ -2,6 +2,8 @@
 
 Com o Googol você pode ver pesquisar e ver detalhes de todas as naves espaciais de Star Wars.
 
+![Main Page](screenshots/app-page.png)
+
 ## Instalação
 
 Clone o repositório para uma pasta local em seu computador:
